@@ -2,8 +2,6 @@ package Model;
 
 import java.awt.Rectangle;
 
-import Model.Objects;
-
 public class Chimney extends Objects{
 
 	private Rectangle rect;

@@ -39,6 +39,7 @@ public class GameController implements KeyListener, BirdActionListener {
         }
         else if(e.getKeyCode() == KeyEvent.VK_R){
             if(game.getCURRENT_SCREEN() == game.getGAMEPLAY_SCREEN()){
+                game.togglePause();
                 game.resetGame();
                 game.setCURRENT_SCREEN(game.getBEGIN_SCREEN());
             }

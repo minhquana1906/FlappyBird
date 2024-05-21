@@ -1,7 +1,5 @@
 package Model;
 
-import Main.Game;
-
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -40,8 +38,6 @@ public class ChimneyGroup {
 
 		for(int i = 0; i < SIZE/2; i++) {
 
-//			int deltaY = getRandomY();
-
 			cn = new Chimney(830 + i*300, bottomChimneyY + deltaY, 74, 400);
 			chimneys.push(cn);
 
@@ -66,8 +62,6 @@ public class ChimneyGroup {
 		chimneys = new QueueList<Chimney>();
 
 		Chimney cn;
-
-//		int deltaY = getRandomY();
 
 		for(int i = 0; i < SIZE/2; i++) {
 

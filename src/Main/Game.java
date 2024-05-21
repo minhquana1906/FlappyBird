@@ -22,8 +22,6 @@ public class Game extends GameScreen {
 	private ChimneyGroup chimneyGroup;
 
 	private Score scoreManager;
-//	private int SCORE = 0;
-//	private String HIGH_SCORE = "";
 	
 	private int BEGIN_SCREEN = 0;
 	private int GAMEPLAY_SCREEN = 1;
@@ -139,63 +137,11 @@ public class Game extends GameScreen {
 		bird.setV(0);
 		bird.setLive(true);
 		
-//		gameController.onScoreReset();
-//		SCORE = gameController.getScore();
-//		SCORE = 0;
+
 		scoreManager.setScore(0);
 
 		chimneyGroup.resetChimneys();
 	}
-
-	
-//	public void updateHighScore() {
-//		int TEMP = -1;
-//		if(this.getHighScore() != null) TEMP = Integer.parseInt(this.getHighScore());
-//		if(SCORE > TEMP) HIGH_SCORE = "" + SCORE;
-//
-//
-//		File scoreFile = new File("src/high_score.txt");
-//		if(!scoreFile.exists())
-//		{
-//			try {
-//				scoreFile.createNewFile();
-//			} catch(IOException e) {
-//			}
-//		}
-//
-//		FileWriter fw = null;
-//		BufferedWriter bw = null;
-//		try {
-//			fw = new FileWriter(scoreFile);
-//			bw = new BufferedWriter(fw);
-//			bw.write(this.HIGH_SCORE);
-//
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//		finally {
-//			try {
-//				bw.close();
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
-//		}
-//	}
-//
-//	public String getHighScore() {
-//		BufferedReader br = null;
-//		try {
-//			FileReader fr = new FileReader("src/high_score.txt");
-//			br = new BufferedReader(fr);
-//			return br.readLine();
-//		} catch (IOException e) {
-//			return "0";
-//		} finally {
-//			try {
-//				if(br != null) br.close();
-//			} catch (IOException e) {}
-//		}
-//	}
 	
 	@Override
 	public void GAME_UPDATE(long deltaTime) {
@@ -252,15 +198,15 @@ public class Game extends GameScreen {
 		else bird_anim.PaintAnims((int) bird.getPosX(), (int) bird.getPosY(), birds, g2, 0, 0);
 
 		if(CURRENT_SCREEN == BEGIN_SCREEN) {
-			g2.setColor(Color.black);
-			g2.drawString("Press SPACE button to play game!", getWidth()/4, getHeight()/2);
+			g2.setColor(Color.white);
+			g2.drawString("Press SPACE button to play game!", 200, 300);
 		}else if(CURRENT_SCREEN == GAMEOVER_SCREEN) {
 			g2.setColor(Color.white);
-			g2.drawString("Press SPACE to turn back begin screen!", getWidth()/4, getHeight()/2);
-			g2.drawString("Score:" + scoreManager.getScore(), getWidth()/4, getHeight()/3);
+			g2.drawString("Press SPACE to turn back begin screen!", 200, 300);
+			g2.drawString("Score:" + scoreManager.getScore(), 200, 200);
 			g2.setColor(Color.white);
-			if(scoreManager.getHighScore() > 0) g2.drawString("High score:" + scoreManager.getHighScore(), getWidth()/4, getHeight()/4);
-			else g2.drawString("High score:" + "0", getWidth()/4, getHeight()/4);
+			if(scoreManager.getHighScore() > 0) g2.drawString("High score:" + scoreManager.getHighScore(), 200, 150);
+			else g2.drawString("High score:" + "0", 200, 150);
 		}
 		
 		g2.setColor(Color.white);

@@ -1,7 +1,5 @@
 package Model;
 
-import Main.Game;
-
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
