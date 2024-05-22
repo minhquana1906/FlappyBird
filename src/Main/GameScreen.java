@@ -29,6 +29,7 @@ public abstract class GameScreen extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(CUSTOM_WIDTH, CUSTOM_HEIGHT);
         setVisible(true);
+        setLocationRelativeTo(null);
     }
     
     public void BeginGame(){
