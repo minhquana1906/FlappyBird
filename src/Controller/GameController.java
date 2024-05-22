@@ -1,6 +1,6 @@
 package Controller;
 
-import Main.Game;
+import View.Game;
 
 import javax.swing.*;
 import java.awt.event.KeyEvent;

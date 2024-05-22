@@ -1,4 +1,4 @@
-package Main;
+package View;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -9,8 +9,6 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import Model.*;
-import View.AFrameOnImage;
-import View.Animation;
 import Controller.GameController;
 
 public class Game extends GameScreen {
@@ -22,7 +20,7 @@ public class Game extends GameScreen {
 	private ChimneyGroup chimneyGroup;
 
 	private Score scoreManager;
-	private boolean isGameStarted;
+	private boolean isGameStarted = false;
 
 	private ImageIcon menu;
 	private ImageIcon start;
@@ -37,7 +35,6 @@ public class Game extends GameScreen {
 	private int GAMEPLAY_SCREEN = 1;
 	private int GAMEOVER_SCREEN = 2;
 	private int MENU_SCREEN = 3;
-	private int PAUSE_SCREEN = 4;
 	private int CURRENT_SCREEN = MENU_SCREEN;
 
 
@@ -110,16 +107,8 @@ public class Game extends GameScreen {
 		return startButton;
 	}
 
-	public void setStartButton(Rectangle startButton) {
-		this.startButton = startButton;
-	}
-
 	public Rectangle getExitButton() {
 		return exitButton;
-	}
-
-	public void setExitButton(Rectangle exitButton) {
-		this.exitButton = exitButton;
 	}
 
 	public Game() {
@@ -151,7 +140,6 @@ public class Game extends GameScreen {
 		chimneyGroup = new ChimneyGroup();
 		scoreManager = new Score();
 
-		isGameStarted = false;
 		startButton = new Rectangle(180, 330, start.getIconWidth(), start.getIconHeight());
 		exitButton = new Rectangle(190, 450, exit.getIconWidth(), exit.getIconHeight());
 
@@ -160,9 +148,9 @@ public class Game extends GameScreen {
 	private void initGameController(){
 		gameController = new GameController(this);
 		addKeyListener(gameController);
+		addMouseListener(gameController);
 
 		bird.setBirdActionListener(gameController);
-		this.addMouseListener(gameController);
 	}
 
 	public void togglePause(){

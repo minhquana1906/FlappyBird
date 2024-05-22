@@ -56,13 +56,6 @@ public class Score {
         this.score++;
     }
 
-    public void resetScore(){
-        this.score = 0;
-    }
-
-    public void resetHighScore(){
-        this.highScore = 0;
-    }
     public void updateHighScore(){
         FileWriter fw = null;
         BufferedWriter bw = null;

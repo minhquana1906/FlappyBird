@@ -3,7 +3,7 @@ package Model;
 import java.awt.Rectangle;
 
 import Controller.BirdActionListener;
-import Main.Game;
+import View.Game;
 
 
 public class Bird extends Objects {
