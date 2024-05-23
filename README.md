@@ -1,2 +1,1 @@
-# Flappy_Bird
-# FlappyBird
+# BTL Java: Final Project Flappy Bird
