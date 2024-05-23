@@ -8,6 +8,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
+import DataAccessObject.DAO_Player;
 import Model.*;
 import Controller.GameController;
 
@@ -19,8 +20,14 @@ public class Game extends GameScreen {
 	private Ground ground;
 	private ChimneyGroup chimneyGroup;
 
-	private Score scoreManager;
+
+	private Player player;
+	private DAO_Player dao;
+
+	private int score;
+	private int highScore;
 	private boolean isGameStarted = false;
+	private boolean isGameOver = false;
 
 	private ImageIcon menu;
 	private ImageIcon start;
@@ -111,6 +118,26 @@ public class Game extends GameScreen {
 		return exitButton;
 	}
 
+	public int getScore() {
+		return score;
+	}
+
+	public void setScore(int score) {
+		this.score = score;
+	}
+
+	public int getHighScore() {
+		return highScore;
+	}
+
+	public void setHighScore(int highScore) {
+		this.highScore = highScore;
+	}
+
+	public void setPlayer(Player player) {
+		this.player = player;
+	}
+
 	public Game() {
 		super(800, 600);
 		loadImage();
@@ -138,7 +165,7 @@ public class Game extends GameScreen {
 		bird = new Bird(350, 250, 45, 45);
 		ground = new Ground();
 		chimneyGroup = new ChimneyGroup();
-		scoreManager = new Score();
+		score = 0;
 
 		startButton = new Rectangle(180, 330, start.getIconWidth(), start.getIconHeight());
 		exitButton = new Rectangle(190, 450, exit.getIconWidth(), exit.getIconHeight());
@@ -174,9 +201,23 @@ public class Game extends GameScreen {
 		bird.setPos(350, 250);
 		bird.setV(0);
 		bird.setLive(true);
+		isGameOver = false;
 
-		scoreManager.setScore(0);
+		score = 0;
 		chimneyGroup.resetChimneys();
+	}
+
+	public void gameOver() {
+		dao = new DAO_Player();
+		player.setScore(score);
+		dao.insert(player);
+		if(dao.selectTopPLayer() != null){
+			Player topPlayer = dao.selectTopPLayer();
+			highScore = topPlayer.getScore();
+		}
+		else{
+			highScore = score;
+		}
 	}
 	
 	@Override
@@ -193,25 +234,35 @@ public class Game extends GameScreen {
 			ground.update();
 			chimneyGroup.update();
 
+			//chim va cham
 			for(int i = 0; i < ChimneyGroup.SIZE; i++) {
 				if(bird.getRect().intersects(chimneyGroup.getChimney(i).getRect())) {
 					bird.setLive(false);
+					if(!isGameOver) {
+						CURRENT_SCREEN = GAMEOVER_SCREEN;
+						gameOver();
+						isGameOver = true;
+					}
 				}		
 			}
 
+			//chim pass ong
 			for(int i = 0; i < ChimneyGroup.SIZE; i++) {
 				if(bird.getPosX() > chimneyGroup.getChimney(i).getPosX() + chimneyGroup.getChimney(i).getW() && !chimneyGroup.getChimney(i).getIsBehindBird() && i%2==0) {
-					scoreManager.increaseScore();
+					score++;
 					gameController.onBirdPass();
 					chimneyGroup.getChimney(i).setIsBehindBird(true);
 				}
 			}
-			
+
+			//chim cham dat
 			if(bird.getPosY() + bird.getH() > ground.getYGround() || bird.getPosY() + bird.getH() <= 0) {
-				CURRENT_SCREEN = GAMEOVER_SCREEN; 
-				scoreManager.updateHighScore();
+				if(!isGameOver) {
+					CURRENT_SCREEN = GAMEOVER_SCREEN;
+					gameOver();
+					isGameOver = true;
+				}
 			}
-			
 		}
 	}
 
@@ -224,7 +275,7 @@ public class Game extends GameScreen {
 		//ve game
 		if(isGameStarted()){
 			g2.setFont(new Font("Arial", Font.BOLD, 24));
-			g2.setColor(Color.decode("#b8daef"));
+			g2.setColor(new Color(184, 218, 239));
 
 			//ve background
 			g2.fillRect(0, 0, MASTER_WIDTH, MASTER_HEIGHT);
@@ -248,21 +299,21 @@ public class Game extends GameScreen {
 				g2.setColor(new Color(252, 160, 72));
 				g2.drawString("Press SPACE to turn back begin screen!", 200, 350);
 				g2.setColor(Color.white);
-				g2.drawString("Score:" + scoreManager.getScore(), 200, 300);
+				g2.drawString("Score: " + score, 200, 300);
 				g2.setColor(Color.white);
-				if(scoreManager.getHighScore() > 0) g2.drawString("High score:" + scoreManager.getHighScore(), 200, 250);
-				else g2.drawString("High score:" + "0", 200, 250);
+				if(highScore > 0) g2.drawString("High score: " + highScore, 200, 250);
+				else g2.drawString("High score: " + "0", 200, 250);
 			}
 
 			g2.setColor(Color.white);
-			g2.drawString("Score:" + scoreManager.getScore(), 10, 20);
+			g2.drawString("Score:" +score, 10, 20);
 		}
 
 		if(isPaused() && CURRENT_SCREEN == GAMEPLAY_SCREEN){
 			g2.setColor(Color.white);
 			g2.drawString("Game Paused", 300, 200);
 			g2.drawString("Press 'P' to resume", 250, 250);
-			g2.drawString("Press 'N' for new game", 250, 280);
+			g2.drawString("Press 'R' for new game", 250, 280);
 			g2.drawString("Press 'Esc' to exit", 250, 310);
 		}
 	}

@@ -98,6 +98,7 @@ public class GameController implements KeyListener, BirdActionListener, MouseLis
     public void mouseClicked(MouseEvent e) {
         if(game.getCURRENT_SCREEN() == game.getMENU_SCREEN()){
             if(game.getStartButton().contains(e.getPoint())){
+                System.out.println("switch");
                 game.setCURRENT_SCREEN(game.getBEGIN_SCREEN());
                 game.setGameStarted(true);
             }
