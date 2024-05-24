@@ -37,6 +37,7 @@ public class Game extends GameScreen {
 	private ImageIcon logo;
 	private ImageIcon gameOver;
 	private ImageIcon scoreBoard;
+	private ImageIcon pauseMenu;
 
 	private Rectangle startButton;
 	private Rectangle exitButton;
@@ -159,6 +160,7 @@ public class Game extends GameScreen {
 			logo = new ImageIcon("src/Sprites/Flappy_Logo.png");
 			gameOver = new ImageIcon("src/Sprites/gameOver.png");
 			scoreBoard = new ImageIcon("src/Sprites/scoreBoard.png");
+			pauseMenu = new ImageIcon("src/Sprites/pause.png");
 			birds = ImageIO.read(new File("src/Sprites/bird_sprite.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -327,11 +329,15 @@ public class Game extends GameScreen {
 		}
 
 		if(isPaused() && CURRENT_SCREEN == GAMEPLAY_SCREEN){
+			g2.drawImage(pauseMenu.getImage(), 150, 100, 500, 330, this);
 			g2.setColor(Color.white);
-			g2.drawString("Game Paused", 300, 200);
-			g2.drawString("Press 'P' to resume", 250, 250);
-			g2.drawString("Press 'R' for new game", 250, 280);
-			g2.drawString("Press 'Esc' to exit", 250, 310);
+			g2.setFont(new Font("Arial", Font.BOLD, 32));
+			g2.drawString("Game Paused", 300, 60);
+			g2.setColor(Color.black);
+			g2.setFont(new Font("Arial", Font.BOLD, 24));
+			g2.drawString("Press 'P' to resume", 280, 230);
+			g2.drawString("Press 'R' for new game", 280, 280);
+			g2.drawString("Press 'Esc' to exit", 280, 330);
 		}
 	}
 }
