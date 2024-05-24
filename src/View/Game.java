@@ -22,6 +22,8 @@ public class Game extends GameScreen {
 
 
 	private Player player;
+	private Player topPlayer;
+	private Player[] topPlayerList;
 	private DAO_Player dao;
 
 	private int score;
@@ -34,6 +36,7 @@ public class Game extends GameScreen {
 	private ImageIcon exit;
 	private ImageIcon logo;
 	private ImageIcon gameOver;
+	private ImageIcon scoreBoard;
 
 	private Rectangle startButton;
 	private Rectangle exitButton;
@@ -155,6 +158,7 @@ public class Game extends GameScreen {
 			exit = new ImageIcon("src/Sprites/exit_S.jpg");
 			logo = new ImageIcon("src/Sprites/Flappy_Logo.png");
 			gameOver = new ImageIcon("src/Sprites/gameOver.png");
+			scoreBoard = new ImageIcon("src/Sprites/scoreBoard.png");
 			birds = ImageIO.read(new File("src/Sprites/bird_sprite.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -211,8 +215,10 @@ public class Game extends GameScreen {
 		dao = new DAO_Player();
 		player.setScore(score);
 		dao.insert(player);
+		topPlayerList = dao.selectAll().toArray(new Player[0]);
+
 		if(dao.selectTopPLayer() != null){
-			Player topPlayer = dao.selectTopPLayer();
+			topPlayer = dao.selectTopPLayer();
 			highScore = topPlayer.getScore();
 		}
 		else{
@@ -295,14 +301,25 @@ public class Game extends GameScreen {
 				g2.drawImage(logo.getImage(), (800 - logo.getIconWidth())/2, 100, null);
 
 			}else if(CURRENT_SCREEN == GAMEOVER_SCREEN) {
-				g2.drawImage(gameOver.getImage(), (800 - logo.getIconWidth())/2, 100, null);
-				g2.setColor(new Color(252, 160, 72));
-				g2.drawString("Press SPACE to turn back begin screen!", 200, 350);
+				g2.drawImage(gameOver.getImage(), (800 - logo.getIconWidth())/2, 50, null);
 				g2.setColor(Color.white);
-				g2.drawString("Score: " + score, 200, 300);
-				g2.setColor(Color.white);
-				if(highScore > 0) g2.drawString("High score: " + highScore, 200, 250);
-				else g2.drawString("High score: " + "0", 200, 250);
+				g2.drawString("Press SPACE to turn back begin screen!", 200, 570);
+				g2.setColor(Color.black);
+				g2.drawString("Your score: " + score, 200, 500);
+				g2.setColor(Color.black);
+				if(highScore > 0){
+					g2.drawImage(scoreBoard.getImage(), (getWidth() - scoreBoard.getIconWidth())/2, 115, null);
+					g2.drawString("Top players: ", 200, 200);
+					g2.drawString("No ", 200, 250);
+					g2.drawString("Name ", 350, 250);
+					g2.drawString("Score ", 500, 250);
+					for(int i = 0; i < topPlayerList.length; i++){
+						g2.drawString(String.valueOf(i+1), 200, 300 + i*50);
+						g2.drawString(topPlayerList[i].getName(), 350, 300 + i*50);
+						g2.drawString(String.valueOf(topPlayerList[i].getScore()), 500, 300 + i*50);
+					}
+				}
+
 			}
 
 			g2.setColor(Color.white);

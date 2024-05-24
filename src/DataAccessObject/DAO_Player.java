@@ -64,7 +64,41 @@ public class DAO_Player implements DAO_Interface<Player> {
 
     @Override
     public ArrayList<Player> selectAll() {
-        return null;
+        ArrayList<Player> topPlayers = new ArrayList<>();
+        Connection con = null;
+        Statement st = null;
+        ResultSet res = null;
+
+        try{
+            con = Database.mycon();
+            st = con.createStatement();
+            String query = "SELECT * FROM score_manager ORDER BY score DESC LIMIT 3";
+
+            System.out.println("Recent query: "+query);
+            res = st.executeQuery(query);
+            while(res.next()){
+                String name = res.getString("player_name");
+                int score = res.getInt("score");
+                topPlayers.add(new Player(name, score));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            try{
+                if(res != null){
+                    res.close();
+                }
+                if(st != null){
+                    st.close();
+                }
+                if(con != null){
+                    con.close();
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return topPlayers;
     }
 
     @Override
