@@ -310,7 +310,7 @@ public class Game extends GameScreen {
 				g2.drawString("Your score: " + score, 200, 500);
 				g2.setColor(Color.black);
 				if(highScore > 0){
-					g2.drawImage(scoreBoard.getImage(), (getWidth() - scoreBoard.getIconWidth())/2, 115, null);
+					g2.drawImage(scoreBoard.getImage(), 16, 115, null);
 					g2.drawString("Top players: ", 200, 200);
 					g2.drawString("No ", 200, 250);
 					g2.drawString("Name ", 350, 250);
